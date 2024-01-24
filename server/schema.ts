@@ -4,6 +4,7 @@ export const typeDefs = `#graphql
         name: String!
         email: String! 
         subjects: [Subject!]
+        tasks: [Task!]
     }
     type Subject {
         id: ID!
@@ -33,6 +34,11 @@ export const typeDefs = `#graphql
     }
     type Mutation {
         addUser(user: AddUserInput!): User
+        deleteUser(id: !ID): [User]
+        addSubject(subject: AddSubjectInput!): Subject
+        deleteSubject(id: !ID): [Subject]
+        addTask(task: AddTaskInput!) Task
+        deleteTask(id: ID!): [Task]
     }
 
     # Input Types

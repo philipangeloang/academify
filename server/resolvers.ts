@@ -69,12 +69,49 @@ export const resolvers = {
   //    }
   // },
   Mutation: {
-    addUser: (_parent: any, args: any, context: Context) => {
+    addUser(_parent: any, args: any, context: Context){
       return context.prisma.user.create({
         data: {
-          ...args.user,
+          name: args.user.name,
+          email: args.user.email
         },
+        // ...args.user - instead of name and email is also possible using spread operator much faster
       });
+    },
+    deleteUser(_parent: any, args: any, context: Context){
+      return context.prisma.user.delete({
+        where: {
+          id: args.id
+        }
+      })
+    },
+    addSubject(_parent: any, args: any, context: Context){
+      return context.prisma.subject.create({
+        data: {
+          ...args.subject
+        }
+      })
+    },
+    deleteSubject(_parent: any, args: any, context: Context){
+      return context.prisma.subject.delete({
+        where: {
+          id: args.id
+        }
+      })
+    },
+    addTask(_parent: any, args: any, context: Context){
+      return context.prisma.subject.create({
+        data: {
+          ...args.task
+        }
+      })
+    },
+    deleteTask(_parent: any, args: any, context: Context){
+      return context.prisma.subject.delete({
+        where: {
+          id: args.id
+        }
+      })
     },
   },
 };
