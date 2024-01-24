@@ -46,4 +46,21 @@ export const typeDefs = `#graphql
         name: String!
         email: String!
     }
+
+    input AddSubjectInput {
+       subject: String!
+       year: String!
+       semester: String!
+        # how to catch the user making this
+    }
+
+    input AddTaskInput {
+        task: String!
+        description: String!
+        priority: Boolean
+        passed: Boolean
+        deadline: String!
+        # how to catch user making this
+        #how to catch subject making this
+    }
 `;
