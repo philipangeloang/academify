@@ -32,8 +32,8 @@ model Task {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   task        String
   description String
-  priority    Boolean?
-  passed      Boolean?
+  isPriority    Boolean?
+  isPassed      Boolean?
   deadline    String
   subject     Subject  @relation(fields: [subjectId], references: [id])
   subjectId   String   @db.ObjectId

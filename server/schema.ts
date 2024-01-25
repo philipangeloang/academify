@@ -3,26 +3,26 @@ export const typeDefs = `#graphql
         id: ID!
         name: String!
         email: String! 
-        subjects: [Subject!]
-        tasks: [Task!]
+        subjects: [Subject!] #Have a separate resolver for nested querying
+        tasks: [Task!] #Have a separate resolver for nested querying
     }
     type Subject {
         id: ID!
         subject: String!
         year: String!
         semester: String!
-        tasks: [Task!]
-        user: User! #Each subject has a corresponding creator user
+        tasks: [Task!] #Have a separate resolver for nested querying
+        userId: ID! #Each subject has a corresponding creator user
     }
     type Task {
         id: ID!
         task: String!
         description: String!
-        priority: Boolean
-        passed: Boolean
+        isPriority: Boolean
+        isPassed: Boolean
         deadline: String
-        subject: Subject! #Each task is directly under an individual subject
-        user: User! #Each task has a corresponding creator user
+        subjectId: ID! #Each task is directly under an individual subject
+        userId: ID! #Each task has a corresponding creator user
     }
     type Query {
         users: [User]
@@ -34,11 +34,14 @@ export const typeDefs = `#graphql
     }
     type Mutation {
         addUser(user: AddUserInput!): User
-        deleteUser(id: !ID): [User]
+        deleteUser(id: ID!): User
+        updateUser(id: ID!, edits: EditUserInput!): User
         addSubject(subject: AddSubjectInput!): Subject
-        deleteSubject(id: !ID): [Subject]
-        addTask(task: AddTaskInput!) Task
-        deleteTask(id: ID!): [Task]
+        deleteSubject(id: ID!): Subject
+        updateSubject(id: ID!, edits: EditSubjectInput!): Subject
+        addTask(task: AddTaskInput!): Task
+        deleteTask(id: ID!): Task
+        updateTask(id: ID!, edits: EditTaskInput!): Task
     }
 
     # Input Types
@@ -47,20 +50,42 @@ export const typeDefs = `#graphql
         email: String!
     }
 
+    input EditUserInput {
+        name: String
+        email: String
+    }
+
     input AddSubjectInput {
        subject: String!
        year: String!
        semester: String!
-        # how to catch the user making this
+       userId:  String!
+    }
+
+    input EditSubjectInput {
+       subject: String
+       year: String
+       semester: String
+       userId:  String!
     }
 
     input AddTaskInput {
         task: String!
         description: String!
-        priority: Boolean
-        passed: Boolean
+        isPriority: Boolean
+        isPassed: Boolean
         deadline: String!
-        # how to catch user making this
-        #how to catch subject making this
+        userId:  String!
+        subjectId: String!
+    }
+
+    input EditTaskInput {
+        task: String
+        description: String
+        isPriority: Boolean
+        isPassed: Boolean
+        deadline: String
+        userId:  String!
+        subjectId: String!
     }
 `;

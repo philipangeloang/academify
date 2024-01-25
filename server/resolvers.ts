@@ -2,31 +2,31 @@ import { Context } from "./context";
 
 export const resolvers = {
   Query: {
-    users(_parent: any, _args: any, context: Context) {
-      return context.prisma.user.findMany();
+    async users(_parent: any, _args: any, context: Context) {
+      return await context.prisma.user.findMany();
     },
-    user(_parent: any, args: any, context: Context) {
-      return context.prisma.user.findFirst({
+    async user(_parent: any, args: any, context: Context) {
+      return await context.prisma.user.findFirst({
         where: {
           id: args.id,
         },
       });
     },
-    subjects(_parent: any, _args: any, context: Context) {
-      return context.prisma.subject.findMany();
+    async subjects(_parent: any, _args: any, context: Context) {
+      return await context.prisma.subject.findMany();
     },
-    subject(_parent: any, args: any, context: Context) {
-      return context.prisma.subject.findFirst({
+    async subject(_parent: any, args: any, context: Context) {
+      return await context.prisma.subject.findFirst({
         where: {
           id: args.id,
         },
       });
     },
-    tasks(_parent: any, _args: any, context: Context) {
-      return context.prisma.task.findMany();
+    async tasks(_parent: any, _args: any, context: Context) {
+      return await context.prisma.task.findMany();
     },
-    task(_parent: any, args: any, context: Context) {
-      return context.prisma.task.findFirst({
+    async task(_parent: any, args: any, context: Context) {
+      return await context.prisma.task.findFirst({
         where: {
           id: args.id,
         },
@@ -34,15 +34,16 @@ export const resolvers = {
     },
   },
   User: {
-    subjects(parent: any, _args: any, context: Context) {
-      return context.prisma.subject.findMany({
+    //The separate resolver for nested querying
+    async subjects(parent: any, _args: any, context: Context) {
+      return await context.prisma.subject.findMany({
         where: {
           userId: parent.id,
         },
       });
     },
-    tasks(parent: any, _args: any, context: Context) {
-      return context.prisma.task.findMany({
+    async tasks(parent: any, _args: any, context: Context) {
+      return await context.prisma.task.findMany({
         where: {
           userId: parent.id,
         },
@@ -50,8 +51,9 @@ export const resolvers = {
     },
   },
   Subject: {
-    tasks(parent: any, _args: any, context: Context) {
-      return context.prisma.task.findMany({
+    //The separate resolver for nested querying
+    async tasks(parent: any, _args: any, context: Context) {
+      return await context.prisma.task.findMany({
         where: {
           subjectId: parent.id,
         },
@@ -61,7 +63,7 @@ export const resolvers = {
   // Optional might not be used
   // Task: {
   //    subject(parent: any, _args: any, context: Context) {
-  //     return context.prisma.subject.findFirst({
+  //     return await context.prisma.subject.findFirst({
   //       where: {
 
   //       }
@@ -69,49 +71,77 @@ export const resolvers = {
   //    }
   // },
   Mutation: {
-    addUser(_parent: any, args: any, context: Context){
-      return context.prisma.user.create({
+    async addUser(_parent: any, args: any, context: Context) {
+      return await context.prisma.user.create({
         data: {
           name: args.user.name,
-          email: args.user.email
+          email: args.user.email,
         },
         // ...args.user - instead of name and email is also possible using spread operator much faster
       });
     },
-    deleteUser(_parent: any, args: any, context: Context){
-      return context.prisma.user.delete({
-        where: {
-          id: args.id
-        }
-      })
+    async deleteUser(_parent: any, args: any, context: Context) {
+      return await context.prisma.user.delete({
+        where: { id: args.id },
+      });
     },
-    addSubject(_parent: any, args: any, context: Context){
-      return context.prisma.subject.create({
+    async updateUser(_parent: any, args: any, context: Context) {
+      return await context.prisma.user.update({
+        where: {
+          id: args.id,
+        },
         data: {
-          ...args.subject
-        }
-      })
+          ...args.edits,
+        },
+      });
     },
-    deleteSubject(_parent: any, args: any, context: Context){
-      return context.prisma.subject.delete({
-        where: {
-          id: args.id
-        }
-      })
-    },
-    addTask(_parent: any, args: any, context: Context){
-      return context.prisma.subject.create({
+    async addSubject(_parent: any, args: any, context: Context) {
+      return await context.prisma.subject.create({
         data: {
-          ...args.task
-        }
-      })
+          ...args.subject,
+        },
+      });
     },
-    deleteTask(_parent: any, args: any, context: Context){
-      return context.prisma.subject.delete({
+    async deleteSubject(_parent: any, args: any, context: Context) {
+      return await context.prisma.subject.delete({
         where: {
-          id: args.id
-        }
-      })
+          id: args.id,
+        },
+      });
+    },
+    async updateSubject(_parent: any, args: any, context: Context) {
+      return await context.prisma.subject.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          ...args.edits,
+        },
+      });
+    },
+    async addTask(_parent: any, args: any, context: Context) {
+      return await context.prisma.subject.create({
+        data: {
+          ...args.task,
+        },
+      });
+    },
+    async deleteTask(_parent: any, args: any, context: Context) {
+      return await context.prisma.subject.delete({
+        where: {
+          id: args.id,
+        },
+      });
+    },
+    async updateTask(_parent: any, args: any, context: Context) {
+      return await context.prisma.task.update({
+        where: {
+          id: args.id,
+        },
+        data: {
+          ...args.edits,
+        },
+      });
     },
   },
 };
