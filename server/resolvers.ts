@@ -120,14 +120,14 @@ export const resolvers = {
       });
     },
     async addTask(_parent: any, args: any, context: Context) {
-      return await context.prisma.subject.create({
+      return await context.prisma.task.create({
         data: {
           ...args.task,
         },
       });
     },
     async deleteTask(_parent: any, args: any, context: Context) {
-      return await context.prisma.subject.delete({
+      return await context.prisma.task.delete({
         where: {
           id: args.id,
         },

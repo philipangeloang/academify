@@ -20,7 +20,7 @@ export const typeDefs = `#graphql
         description: String!
         isPriority: Boolean
         isPassed: Boolean
-        deadline: String
+        deadline: String!
         subjectId: ID! #Each task is directly under an individual subject
         userId: ID! #Each task has a corresponding creator user
     }
