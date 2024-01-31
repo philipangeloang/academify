@@ -7,15 +7,21 @@ import SignoutCard from "./signout-card";
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
 
-  if (!session?.user) {
-  }
+  console.log(session);
   return (
     <nav className="w-full mx-auto bg-black">
       <div className="mx-auto max-w-7xl text-white p-5 flex justify-between">
         {/* Logo */}
-        <h1 className="font-black text-xl flex justify-center items-center">
-          academify.
+        <h1 className="flex justify-center items-center gap-5">
+          <p className="font-black text-xl ">academify</p>
+          {session?.user ? (
+            <ul className="flex justify-center items-center gap-5 text-sm">
+              <li>Dashboard</li>
+              <li>Panel</li>
+            </ul>
+          ) : null}
         </h1>
+
         <ul className="flex gap-5 text-sm justify-center items-center">
           <li>{session?.user ? <SignoutCard /> : <SigninCard />}</li>
           <li>
