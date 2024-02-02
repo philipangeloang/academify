@@ -11,7 +11,7 @@ import { GithubSigninButton, GoogleSigninButton } from "./auth-buttons";
 const SigninCard = async () => {
   return (
     <Dialog>
-      <DialogTrigger>Sign in</DialogTrigger>
+      <DialogTrigger className="hover:opacity-80">Sign in</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Social Login</DialogTitle>

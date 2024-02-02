@@ -1,6 +1,20 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import { gql, useQuery } from "@apollo/client";
 
-export default function Home() {
+const GET_USER = gql`
+  query getUser($userId: ID!) {
+    user(id: $userId) {
+      name
+      email
+    }
+  }
+`;
+
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
   return (
     <main className="max-w-7xl mx-auto p-5 flex flex-col justify-center items-center">
       <h1 className="font-black text-black text-6xl pt-20 text-center leading-[1.1] max-w-2xl">
@@ -12,7 +26,7 @@ export default function Home() {
         manage assignments, boost productivity, and conquer deadlines. Elevate
         your academic game and thrive in style.
       </p>
-      <Button variant="blue">Get Started</Button>
+      <Button variant="blue">Documentation</Button>
     </main>
   );
 }

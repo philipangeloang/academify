@@ -12,7 +12,7 @@ import { SignoutButton } from "./auth-buttons";
 const SignoutCard = () => {
   return (
     <Dialog>
-      <DialogTrigger>Sign out</DialogTrigger>
+      <DialogTrigger className="hover:opacity-80">Sign out</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Are you leaving?</DialogTitle>
